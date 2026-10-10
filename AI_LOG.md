@@ -40,3 +40,11 @@ Required deliverable per PRD section 0.
 **What went wrong:** TypeScript failed with '...must be imported using a type-only import when verbatimModuleSyntax is enabled'.
 **How it was found:** npm run build output.
 **How it was fixed:** Set verbatimModuleSyntax to false in tsconfig.app.json.
+
+## Entry 005 — Glassmorphism Refactor
+
+**Date:** 2026-10-10
+**What I did:** Completely refactored the frontend UI to match a glassmorphism (Bookavy) aesthetic with dreamy pastel gradients and floating panels.
+**What went wrong:** Nothing broke during the restyle, but ensuring the readability of the main text area required creating a custom .glass-opaque utility that sits above 85% opacity, while the surrounding app uses .glass-surface (~40% opacity).
+**How it was found:** Design prompt constraints for WCAG AA contrast.
+**How it was fixed:** Used distinct token classes for readable areas versus structural areas.

@@ -44,7 +44,7 @@ export const HighlightedText = ({ originalText, hardestSentences, activeRank }: 
   return (
     <div 
       ref={containerRef}
-      className="bg-surface rounded-xl shadow-sm border border-brand p-8 font-serif text-[17px] leading-[1.7] text-main whitespace-pre-wrap overflow-y-auto max-h-[800px] transition-colors duration-300"
+      className="glass-opaque rounded-3xl shadow-sm border border-glass p-8 md:p-12 font-serif text-[17px] leading-[1.8] text-main whitespace-pre-wrap overflow-y-auto max-h-[800px] transition-colors duration-300"
     >
       {segments.map((segment, idx) => {
         if (segment.rank === null) {

@@ -9,7 +9,7 @@ interface ScoreCardProps {
 
 export const ScoreCard = ({ summary, genreCheck, scoreChange }: ScoreCardProps) => {
   return (
-    <div className="bg-surface rounded-xl shadow-sm border border-brand p-6 flex flex-col md:flex-row items-center justify-between gap-6 transition-colors duration-300">
+    <div className="glass-tray rounded-3xl shadow-sm border border-glass p-8 flex flex-col md:flex-row items-center justify-between gap-8 transition-colors duration-300">
       
       <div className="flex-1 flex flex-col items-center relative">
         <ScoreGauge score={summary.fleschReadingEase} />
