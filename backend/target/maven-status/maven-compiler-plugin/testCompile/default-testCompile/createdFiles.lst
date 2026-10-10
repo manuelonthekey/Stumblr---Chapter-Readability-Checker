@@ -1,0 +1,7 @@
+com\chaptercheck\api\AnalysisControllerTest.class
+com\chaptercheck\engine\TextPreprocessorTest.class
+com\chaptercheck\engine\SentenceSplitterTest.class
+com\chaptercheck\engine\WordSyllableCounterTest.class
+com\chaptercheck\engine\ReadabilityCalculatorTest.class
+com\chaptercheck\engine\PassiveVoiceDetectorTest.class
+com\chaptercheck\engine\DialogueFilterTest.class
