@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BookOpen, Info, Shield, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
+import stumblrLogo from '../../assets/stumblr-logo.png';
 
 interface SidebarProps {
   view: 'app' | 'how' | 'privacy';
@@ -49,9 +50,11 @@ export const Sidebar = ({ view, setView, onClear }: SidebarProps) => {
         </button>
 
         <div className="p-6 flex items-center space-x-3 cursor-pointer mt-4" onClick={() => { setView('app'); onClear(); }}>
-          <div className="w-10 h-10 bg-[var(--brand-primary)] rounded-xl flex items-center justify-center text-white font-bold font-serif text-xl shadow-md shrink-0">
-            S
-          </div>
+          <img 
+            src={stumblrLogo} 
+            alt="Stumblr logo" 
+            className="w-11 h-11 shrink-0 object-contain drop-shadow-md hover:scale-105 transition-transform" 
+          />
           {!isCollapsed && <span className="font-bold text-2xl tracking-tight text-main font-serif">Stumblr</span>}
         </div>
 

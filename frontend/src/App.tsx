@@ -14,6 +14,7 @@ import { TypingTagline } from './components/TypingTagline';
 import { LoadingScreen } from './components/common/LoadingScreen';
 import { BackgroundBlobs } from './components/common/BackgroundBlobs';
 import { Sidebar } from './components/common/Sidebar';
+import stumblrLogo from './assets/stumblr-logo.png';
 
 function App() {
   const { analyze, clear, isLoading, isColdStart, error, result, scoreChange } = useAnalysis();
@@ -54,6 +55,12 @@ function App() {
         
         <main className="flex-1 overflow-y-auto px-6 py-10 md:px-12 md:py-12 scroll-smooth pb-24 md:pb-12">
           <div className="max-w-4xl mx-auto w-full">
+            
+            {/* Mobile Header */}
+            <div className="md:hidden flex items-center space-x-3 mb-6 cursor-pointer" onClick={() => { setView('app'); clear(); }}>
+              <img src={stumblrLogo} alt="Stumblr logo" className="w-10 h-10 shrink-0 object-contain drop-shadow-md" />
+              <span className="font-bold text-2xl tracking-tight text-main font-serif">Stumblr</span>
+            </div>
             
             {isColdStart && (
               <div className="mb-6 p-4 bg-amber-500/20 border border-amber-500/30 rounded-xl text-amber-700 dark:text-amber-200 text-sm flex items-center backdrop-blur-md">
