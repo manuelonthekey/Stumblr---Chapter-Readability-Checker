@@ -29,7 +29,12 @@ export const useAnalysis = () => {
 
     try {
       const request: AnalyzeRequest = { text, options };
-      const result = await analyzeText(request);
+      
+      // Wait for both the API call and the minimum 2.5s visual loading timer
+      const [result] = await Promise.all([
+        analyzeText(request),
+        new Promise(resolve => setTimeout(resolve, 2500))
+      ]);
       
       clearTimeout(coldStartTimer);
       

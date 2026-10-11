@@ -111,7 +111,7 @@ export const InputPanel = ({ onAnalyze, isLoading, initialText = '' }: InputPane
           {text.length > 0 && (
             <button 
               onClick={() => setText('')}
-              className="px-4 py-2 text-sm font-bold text-muted hover:text-main transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-muted hover:text-main cursor-pointer active:scale-95 transition-all font-sans tracking-wide"
             >
               Clear
             </button>

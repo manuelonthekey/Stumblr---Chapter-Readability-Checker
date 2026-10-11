@@ -11,7 +11,7 @@ import { HighlightedText } from './components/ResultsPanel/HighlightedText';
 import { HowItWorks } from './components/StaticPages/HowItWorks';
 import { Privacy } from './components/StaticPages/Privacy';
 import { TypingTagline } from './components/TypingTagline';
-import { SkeletonResults } from './components/Skeleton';
+import { LoadingScreen } from './components/common/LoadingScreen';
 import { BackgroundBlobs } from './components/common/BackgroundBlobs';
 import { Sidebar } from './components/common/Sidebar';
 
@@ -49,7 +49,7 @@ function App() {
     <div className="min-h-screen flex items-center justify-center p-0 md:p-6 overflow-hidden">
       <BackgroundBlobs />
       
-      <div className="glass-panel w-full h-full md:w-[95vw] md:max-w-[1400px] md:h-[92vh] md:rounded-[36px] flex flex-col md:flex-row overflow-hidden relative">
+      <div className="glass-panel w-full h-full md:w-[95vw] md:max-w-[1400px] md:h-[92vh] md:rounded-[36px] flex flex-col md:flex-row overflow-hidden relative z-10">
         <Sidebar view={view} setView={setView} onClear={clear} />
         
         <main className="flex-1 overflow-y-auto px-6 py-10 md:px-12 md:py-12 scroll-smooth pb-24 md:pb-12">
@@ -89,7 +89,7 @@ function App() {
             )}
 
             {view === 'app' && isLoading && (
-              <SkeletonResults />
+              <LoadingScreen />
             )}
 
             {view === 'app' && result && !isLoading && (

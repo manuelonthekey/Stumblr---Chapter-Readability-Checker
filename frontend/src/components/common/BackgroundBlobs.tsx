@@ -1,6 +1,17 @@
 export const BackgroundBlobs = () => {
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-gradient-to-br from-[var(--bg-grad-start)] via-[var(--bg-grad-mid)] to-[var(--bg-grad-end)] transition-colors duration-500">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      {/* Base flowing gradient */}
+      <div 
+        className="absolute inset-0 opacity-80"
+        style={{
+          background: 'linear-gradient(-45deg, #FFCBA4, #FFD1DC, #FFFFFF, #ADD8E6)',
+          backgroundSize: '400% 400%',
+          animation: 'flowGradient 15s ease infinite'
+        }}
+      />
+      
+      {/* Blobs */}
       <div 
         className="blob bg-[var(--blob-1)] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] top-[-10%] left-[-10%]" 
         style={{ animationDelay: '0s' }} 
