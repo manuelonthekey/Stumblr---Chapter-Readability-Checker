@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { AnalyzeOptions } from '../../types/api';
 import { sampleChapterText } from '../../utils/sampleChapter';
-import { Settings2 } from 'lucide-react';
+import { SlidersHorizontal, ChevronDown, Check } from 'lucide-react';
 
 interface InputPanelProps {
   onAnalyze: (text: string, options: AnalyzeOptions) => void;
@@ -9,10 +9,42 @@ interface InputPanelProps {
   initialText?: string;
 }
 
+const GENRE_OPTIONS = [
+  { value: 'GENERAL_FICTION', label: 'General Fiction' },
+  { value: 'THRILLER', label: 'Thriller / Suspense' },
+  { value: 'ROMANCE', label: 'Romance' },
+  { value: 'YA', label: 'Young Adult (YA)' },
+  { value: 'LITERARY_FICTION', label: 'Literary Fiction' },
+  { value: 'NON_FICTION', label: 'Non-Fiction' },
+];
+
 export const InputPanel = ({ onAnalyze, isLoading, initialText = '' }: InputPanelProps) => {
   const [text, setText] = useState(initialText);
   const [genre, setGenre] = useState('GENERAL_FICTION');
   const [excludeDialogue, setExcludeDialogue] = useState(false);
+  const [isGenreOpen, setIsGenreOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsGenreOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsGenreOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const selectedGenreLabel = GENRE_OPTIONS.find(g => g.value === genre)?.label || 'General Fiction';
 
   const charCount = text.length;
   const wordCount = text.trim().split(/\s+/).filter(w => w.length > 0).length;
@@ -40,38 +72,89 @@ export const InputPanel = ({ onAnalyze, isLoading, initialText = '' }: InputPane
   return (
     <div className="w-full flex flex-col gap-6">
       <div className="flex flex-wrap gap-4 items-center justify-between px-2">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
           
-          <div className="flex items-center space-x-2 bg-transparent border-2 border-[var(--brand-primary)] rounded-full px-4 py-1.5 focus-within:ring-2 focus-within:ring-[var(--brand-primary)]/20 transition-all">
-            <Settings2 size={16} className="text-primary" />
-            <select 
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-              className="bg-transparent text-sm font-medium text-main focus:outline-none appearance-none cursor-pointer pr-4"
+          {/* Custom Glass Genre Dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              type="button"
+              onClick={() => setIsGenreOpen(!isGenreOpen)}
+              className="glass-tray border border-white/80 rounded-full px-4 py-2 hover:bg-white/80 transition-all flex items-center space-x-2.5 cursor-pointer shadow-xs active:scale-95 text-sm font-medium text-main"
+              aria-haspopup="listbox"
+              aria-expanded={isGenreOpen}
             >
-              <option value="GENERAL_FICTION">General Fiction</option>
-              <option value="THRILLER">Thriller / Suspense</option>
-              <option value="ROMANCE">Romance</option>
-              <option value="YA">Young Adult (YA)</option>
-              <option value="LITERARY_FICTION">Literary Fiction</option>
-              <option value="NON_FICTION">Non-Fiction</option>
-            </select>
+              <SlidersHorizontal size={15} className="text-primary" />
+              <span>{selectedGenreLabel}</span>
+              <ChevronDown 
+                size={14} 
+                className={`text-muted transition-transform duration-200 ${isGenreOpen ? 'rotate-180' : ''}`} 
+              />
+            </button>
+
+            {isGenreOpen && (
+              <div 
+                className="absolute top-full left-0 mt-2 w-56 glass-opaque rounded-2xl border border-white/90 shadow-xl p-1.5 z-50 backdrop-blur-xl animate-in fade-in duration-150"
+                role="listbox"
+              >
+                {GENRE_OPTIONS.map((item) => {
+                  const isSelected = genre === item.value;
+                  return (
+                    <button
+                      key={item.value}
+                      type="button"
+                      role="option"
+                      aria-selected={isSelected}
+                      onClick={() => {
+                        setGenre(item.value);
+                        setIsGenreOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
+                        isSelected 
+                          ? 'bg-[var(--brand-primary)] text-white shadow-xs' 
+                          : 'text-main hover:bg-white/60'
+                      }`}
+                    >
+                      <span>{item.label}</span>
+                      {isSelected && <Check size={14} className="text-white ml-2 shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
           
-          <label className="flex items-center space-x-2 text-sm text-main cursor-pointer bg-transparent border-2 border-[var(--brand-primary)] rounded-full px-4 py-1.5 transition-all hover:bg-[var(--brand-primary)]/10">
-            <input 
-              type="checkbox" 
-              checked={excludeDialogue}
-              onChange={(e) => setExcludeDialogue(e.target.checked)}
-              className="rounded-sm border-2 border-primary text-primary focus:ring-0 bg-transparent w-4 h-4 cursor-pointer"
-            />
-            <span className="font-medium">Exclude dialogue</span>
-          </label>
+          {/* Custom Glass Exclude Dialogue Toggle */}
+          <button
+            type="button"
+            role="checkbox"
+            aria-checked={excludeDialogue}
+            onClick={() => setExcludeDialogue(!excludeDialogue)}
+            onKeyDown={(e) => {
+              if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                setExcludeDialogue(!excludeDialogue);
+              }
+            }}
+            className="glass-tray border border-white/80 rounded-full px-4 py-2 hover:bg-white/80 transition-all flex items-center space-x-2.5 cursor-pointer shadow-xs select-none active:scale-95 text-sm font-medium"
+          >
+            <div 
+              className={`w-4 h-4 rounded-md flex items-center justify-center transition-all ${
+                excludeDialogue 
+                  ? 'bg-[var(--brand-primary)] text-white shadow-xs' 
+                  : 'border-2 border-[var(--brand-primary)]/40 bg-white/40'
+              }`}
+            >
+              {excludeDialogue && <Check size={11} strokeWidth={3} />}
+            </div>
+            <span className={excludeDialogue ? 'text-primary font-semibold' : 'text-main'}>
+              Exclude dialogue
+            </span>
+          </button>
         </div>
         
         <button 
           onClick={loadSample}
-          className="text-sm font-semibold text-primary hover:text-accent transition-colors underline underline-offset-4"
+          className="text-sm font-semibold text-primary hover:text-accent transition-colors underline underline-offset-4 cursor-pointer"
         >
           Try a sample chapter
         </button>

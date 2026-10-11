@@ -70,3 +70,12 @@ Required deliverable per PRD section 0.
 **What I did:** Added a 4-color animated flowing gradient to the background. Adjusted the opacity variables of the glassmorphism panels to ensure they are properly translucent (frosted) rather than fully transparent. Re-styled the 'How it Works' and 'Privacy' pages to match the Stumblr glass-opaque aesthetic and updated branding.
 **What went wrong:** On certain browsers, an overly aggressive CSS fallback rule `@supports not (backdrop-filter: blur(24px))` triggered and replaced the translucent glass with an opaque beige background, blocking the gradient.
 **How it was fixed:** Removed the aggressive fallback rule, applied the gradient with standard CSS styles, and adjusted z-indexing so the background smoothly animates under the glass panel.
+
+---
+
+## Entry 008 — Glassmorphism Custom Controls (Genre Dropdown & Dialogue Checkbox)
+
+**Date:** 2026-10-11
+**What I did:** Replaced native browser `<select>` and `<input type="checkbox">` elements in the input control bar with custom glassmorphism components.
+**What went wrong:** Native OS dropdown menus and default square checkboxes broke the soft pastel frosted-glass aesthetic of Stumblr.
+**How it was fixed:** Built a custom animated glass dropdown with frosted backdrop blur, rounded-2xl menu, active checkmarks, and click-outside listeners. Created a custom rounded glass checkbox toggle with Lucide check icons and keyboard accessibility.
